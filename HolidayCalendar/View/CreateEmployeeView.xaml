@@ -1,0 +1,34 @@
+﻿<UserControl x:Class="HolidayCalendar.View.CreateEmployeeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <UserControl.Resources>
+        <ResourceDictionary Source="../Styles/BaseViewModelStyles.xaml"/>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Border Grid.Row="0" Style="{StaticResource TitleBorder}">
+            <TextBlock Style="{StaticResource HeaderMedium}" 
+                       Text="CreateEmployee"/>
+        </Border>
+        <StackPanel Grid.Row="1">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Style="{StaticResource FieldNameText}" 
+                           Text="First Name:"/>
+                <TextBox Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Style="{StaticResource FieldNameText}" 
+                           Text="Family Name:"/>
+                <TextBox Text="{Binding FamilyName, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal">
+                <Button Content="Save" Command="{Binding SaveEmployeeCommand}"/>
+                <Button Content="Cancel" Command="{Binding CancelCommand}"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>

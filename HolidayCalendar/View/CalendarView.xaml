@@ -1,0 +1,59 @@
+﻿<UserControl x:Class="HolidayCalendar.View.CalendarView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <UserControl.Resources>
+        <ResourceDictionary Source="../Styles/CalendarStyle.xaml"/>
+     </UserControl.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" 
+                    Command="{Binding PreviousMonthCommand}"
+                    Content="&lt;"/>
+            <Button Grid.Column="2" 
+                    Command="{Binding NextMonthCommand}"
+                    Content="&gt;"/>
+            <Border Grid.Column="1" Style="{StaticResource HeaderFrame}">
+                <TextBlock Style="{StaticResource HeaderLarge}" 
+                           Text="{Binding Calendar.MonthName}"/>
+            </Border>
+
+            <Button Grid.Column="4" 
+                    Command="{Binding PreviousYearCommand}"
+                    Content="&lt;"/>
+            <Button Grid.Column="6" 
+                    Command="{Binding NextYearCommand}"
+                    Content="&gt;"/>
+            <Border Grid.Column="5" Style="{StaticResource HeaderFrame}">
+                <TextBlock Style="{StaticResource HeaderLarge}" 
+                           Text="{Binding Calendar.Year}"/>
+            </Border>
+        </Grid>
+        <StackPanel Grid.Row="1">
+            <!--Table headers-->
+            <ItemsControl ItemsSource="{Binding Calendar.Days}" 
+                          ItemsPanel="{StaticResource DaysOfWeekPanelTemplate}" 
+                          ItemTemplate="{StaticResource DayOfWeekTemplate}"/>
+            <!--User names, holidays & user summary-->
+            <ItemsControl ItemsSource="{Binding EmployeeCalendars}" 
+                          ItemTemplate="{StaticResource EmployeeRowTemplate}"/>
+            <!--Daily summary-->
+            <ItemsControl ItemsSource="{Binding DailySummary.Summaries}"
+                          Style="{StaticResource DailySummaryStyle}"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

@@ -1,0 +1,29 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:data="clr-namespace:DataLib.Model;assembly=DataLib"
+                    xmlns:view="clr-namespace:HolidayCalendar.View">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="CalendarStyle.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+    
+    <ItemsPanelTemplate x:Key="LegendItemsPanel">
+        <WrapPanel Orientation="Horizontal"/>
+    </ItemsPanelTemplate>
+    
+    <DataTemplate x:Key="DayItem" DataType="{x:Type data:HolidayReason}">
+        <view:HolidayReasonLongView/>
+    </DataTemplate>
+
+    <Style x:Key="LegendRow" TargetType="TextBlock" BasedOn="{StaticResource DefaultText}">
+        <Setter Property="Height" Value="{StaticResource RowHeight}"/>
+        <Setter Property="MinWidth" Value="120"/>
+        <Setter Property="Background" Value="#E9EEE7"/>
+        <Setter Property="Margin" Value="2,10"></Setter>
+    </Style>
+
+    <Style x:Key="LegendTitle" TargetType="TextBlock" BasedOn="{StaticResource LegendRow}">
+        <Setter Property="VerticalAlignment" Value="Top"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Background" Value="#D9DEBE"/>
+    </Style>
+</ResourceDictionary>

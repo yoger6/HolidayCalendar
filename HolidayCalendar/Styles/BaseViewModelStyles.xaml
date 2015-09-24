@@ -1,0 +1,50 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <Style x:Key="TitleText" TargetType="TextBlock" BasedOn="{StaticResource HeaderMedium}">
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="Margin" Value="5,5,0,2"/>
+    </Style>
+    
+    <Style x:Key="TitleBorder" TargetType="Border">
+        <Setter Property="BorderThickness" Value="0,0,0,1"/> 
+        <Setter Property="Margin" Value="1,0,10,5"/>
+        <Setter Property="BorderBrush" Value="SlateGray"/>
+    </Style>
+    
+    <Style x:Key="FieldNameText" TargetType="TextBlock" BasedOn="{StaticResource BoldText}">
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="MinWidth" Value="100"/>
+        <Setter Property="Margin" Value="5,0,5,3"/>
+    </Style>
+    
+    <Style x:Key="CommonStyleForPasswordBoxAndTextBox">
+        <Setter Property="TextBoxBase.FontFamily" Value="{StaticResource DefaultFontFamily}"/>
+        <Setter Property="TextBoxBase.FontSize" Value="13"/>
+        <Setter Property="TextBoxBase.BorderThickness" Value="1"/>
+        <Setter Property="TextBoxBase.BorderBrush" Value="Black"/>
+        <Setter Property="Control.MinWidth" Value="100"/>
+        <Setter Property="Control.Margin" Value="0,0,5,3"/>
+    </Style>
+
+    <Style TargetType="TextBox" BasedOn="{StaticResource CommonStyleForPasswordBoxAndTextBox}"/>
+    <Style TargetType="PasswordBox" BasedOn="{StaticResource CommonStyleForPasswordBoxAndTextBox}"/>
+    
+    <Style TargetType="Button">
+        <Setter Property="MinWidth" Value="50"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="2,5"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border BorderThickness="1"
+                            BorderBrush="Black"
+                            Width="{TemplateBinding Width}">
+                        <ContentPresenter HorizontalAlignment="Center" 
+                                          VerticalAlignment="Center" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

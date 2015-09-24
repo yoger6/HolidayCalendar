@@ -1,0 +1,13 @@
+﻿<UserControl x:Class="HolidayCalendar.View.HolidayReasonShortView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <UserControl.Resources>
+        <ResourceDictionary Source="../Styles/ShortFrameStyle.xaml"/>
+    </UserControl.Resources>
+
+    <Border Style="{StaticResource CalendarShortFrameWithReason}">
+        <TextBlock Style="{StaticResource ShortFrameBoldText}" 
+                   Text="{Binding ShortName}"/>
+    </Border>
+</UserControl>

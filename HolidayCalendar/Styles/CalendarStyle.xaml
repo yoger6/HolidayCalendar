@@ -1,0 +1,89 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:view="clr-namespace:HolidayCalendar.View"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                    xmlns:converters1="clr-namespace:HolidayCalendar.Tools.Converters">
+    
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="ShortFrameStyle.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+    
+    <converters1:DoubleToMarginConverter x:Key="NumberToMarginConverter"/>
+    <converters1:StringLengthConverter x:Key="StringLengthConverter"/>
+    <converters1:HolidayColorToBrushConverter x:Key="ColorToBrushConverter"/>
+    
+    <sys:Double x:Key="FirstColumnMaxWidth">200</sys:Double>
+    <sys:Int32 x:Key="WeekDayCharsToDisplay">2</sys:Int32>
+
+    <SolidColorBrush x:Key="DayOfWeekBackgroundBrush" Color="LightBlue"/>
+    <SolidColorBrush x:Key="DayOfMonthBackgroundBrush" Color="#780000"/>
+
+    <Style x:Key="HeaderFrame" TargetType="Border">
+        <Setter Property="MinWidth" Value="100"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+    </Style>
+    
+    <DataTemplate x:Key="EmployeeRowTemplate">
+        <view:EmployeeHolidayRowView/>
+    </DataTemplate>
+
+    <ItemsPanelTemplate x:Key="DaysOfWeekPanelTemplate">
+        <StackPanel Orientation="Horizontal" Margin="{Binding Source={StaticResource FirstColumnMaxWidth}, 
+                                                              Converter={StaticResource NumberToMarginConverter}}" />
+    </ItemsPanelTemplate>
+    <DataTemplate x:Key="DayOfWeekTemplate">
+        <StackPanel>
+            <Border Style="{StaticResource CalendarShortFrame}" 
+                    Background="{StaticResource DayOfWeekBackgroundBrush}">
+                <TextBlock Style="{StaticResource DefaultText}"
+                           HorizontalAlignment="Center"
+                           Width="{StaticResource ShortFrameWidth}"
+                           Text="{Binding Path=Value,
+                                          Converter={StaticResource StringLengthConverter},
+                                          ConverterParameter={StaticResource WeekDayCharsToDisplay}}"/>
+            </Border>
+            <Border Style="{StaticResource CalendarShortFrame}" 
+                    Background="{StaticResource DayOfMonthBackgroundBrush}">
+                <TextBlock Text="{Binding Key.Day}" 
+                           Style="{StaticResource DefaultText}" 
+                           HorizontalAlignment="Center"
+                           Foreground="White"/>
+            </Border>
+        </StackPanel>
+    </DataTemplate>
+
+    <Style x:Key="DailySummaryTitleStyle" TargetType="TextBlock" BasedOn="{StaticResource HeaderSmall}">
+        <Setter Property="Width" Value="{StaticResource FirstColumnMaxWidth}"/>
+    </Style>
+    <ItemsPanelTemplate x:Key="DailySummaryItemsPanelTemplate">
+        <StackPanel Orientation="Horizontal"/>
+    </ItemsPanelTemplate>
+    
+
+    <DataTemplate x:Key="DailySummaryItemTemplate">
+        <StackPanel Orientation="Horizontal">
+            <Border Style="{StaticResource CalendarShortFrame}"
+                    Background="CadetBlue">
+                <TextBlock Style="{StaticResource BoldText}" 
+                           HorizontalAlignment="Center" 
+                           Text="{Binding}"/>
+            </Border>
+        </StackPanel>
+    </DataTemplate>
+    
+    <Style x:Key="DailySummaryStyle" TargetType="ItemsControl">
+        <Setter Property="ItemsPanel" Value="{StaticResource DailySummaryItemsPanelTemplate}"/>
+        <Setter Property="ItemTemplate" Value="{StaticResource DailySummaryItemTemplate}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ItemsControl">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Style="{StaticResource DailySummaryTitleStyle}">Summary</TextBlock>
+                        <ItemsPresenter/>
+                    </StackPanel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

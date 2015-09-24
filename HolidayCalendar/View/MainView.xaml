@@ -1,0 +1,25 @@
+﻿<Window x:Class="HolidayCalendar.View.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:viewModels="clr-namespace:HolidayCalendar.ViewModel"
+        xmlns:views="clr-namespace:HolidayCalendar.View"
+        Title="{Binding Title}"
+        SizeToContent="WidthAndHeight">
+    <Window.DataContext>
+        <viewModels:MainViewModel/>
+    </Window.DataContext>
+
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type viewModels:LoginViewModel}">
+            <views:LoginView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModels:HolidayCalendarViewModel}">
+            <views:CalendarOverView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModels:CreateEmployeeViewModel}">
+            <views:CreateEmployeeView/>
+        </DataTemplate>
+    </Window.Resources>
+    
+    <ContentControl Content="{Binding CurrentViewModel}"/>
+</Window>

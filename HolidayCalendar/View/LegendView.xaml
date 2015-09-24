@@ -1,0 +1,27 @@
+﻿<UserControl x:Class="HolidayCalendar.View.LegendView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:viewModel="clr-namespace:HolidayCalendar.ViewModel">
+    <UserControl.Resources>
+        <ResourceDictionary Source="../Styles/LegendStyle.xaml"/>
+    </UserControl.Resources>
+    
+    <UserControl.DataContext>
+        <viewModel:LegendViewModel/>
+    </UserControl.DataContext>
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        
+        <TextBlock Grid.Column="0" 
+                   Style="{StaticResource LegendTitle}" 
+                   Text="{Binding Title}"/>
+        <ItemsControl Grid.Column="1" 
+                      ItemsSource="{Binding Reasons}" 
+                      ItemsPanel="{StaticResource LegendItemsPanel}" 
+                      ItemTemplate="{StaticResource DayItem}"/>
+    </Grid>
+</UserControl>
