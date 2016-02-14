@@ -17,7 +17,7 @@
         <TextBlock Grid.Column="0" 
                    Style="{StaticResource EmployeeNameText}" 
                    Text="{Binding EmployeeDisplayName}"/>
-        
+        <Button Grid.Column="0" Style="{StaticResource EditButton}"/>
         <ListView Grid.Column="1" 
                   Style="{StaticResource EmployeeDayListView}"
                   ItemsSource="{Binding EmployeeDays}" 

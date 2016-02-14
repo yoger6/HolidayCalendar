@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using HolidayCalendar.View;
 using HolidayCalendar.ViewModel;
 
@@ -11,13 +12,13 @@ namespace HolidayCalendar
             SetupMainView();
             base.OnStartup(e);
         }
-
+        
         private void SetupMainView()
         {
             var mainView = new MainView();
             var mainViewModel = new MainViewModel();
             mainView.DataContext = mainViewModel;
-            this.Exit += (sender, args) => mainViewModel.Close();
+            Exit += (sender, args) => mainViewModel.Close();
 
             mainView.Show();
         }

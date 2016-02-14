@@ -1,5 +1,6 @@
 ﻿using System;
-using System.DirectoryServices;
+using System.DirectoryServices.Protocols;
+using System.Net;
 
 namespace HolidayCalendar.Tools
 {
@@ -10,22 +11,20 @@ namespace HolidayCalendar.Tools
 
         public bool Authenticate(string password)
         {
-            using (var entry = new DirectoryEntry())
+            try
             {
-                entry.Username = UserName;
-                entry.Path = Domain;
-                entry.Password = password;
-                try
-                {
-                    var nativeObject = entry.NativeObject;
-                    return true;
-                }
-                catch (DirectoryServicesCOMException e)
-                {
-                    Console.WriteLine(e.Message);
-                    return false;
-                }
+                var credential = new NetworkCredential(UserName, password, Domain);
+                var ldapServer = Domain;
+                var ldapConnection = new LdapConnection(ldapServer);
+                ldapConnection.Bind(credential);
             }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+
+            return false;
         }
     }
 }

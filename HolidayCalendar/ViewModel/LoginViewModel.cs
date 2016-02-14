@@ -8,7 +8,7 @@ using HolidayCalendar.Tools;
 
 namespace HolidayCalendar.ViewModel
 {
-    public class LoginViewModel : ChildViewModel
+    public class LoginViewModel : UtilityViewModel
     {
         private readonly IDirectoryAuthenticator _directoryAuthenticator;
 
@@ -16,7 +16,7 @@ namespace HolidayCalendar.ViewModel
         private IEmployeeRepository _employeeRepository;
         private string _domain;
         private string _userName;
-        private string _errorMessage;
+        private bool _rememberLogin;
 
         public string Domain
         {
@@ -38,13 +38,13 @@ namespace HolidayCalendar.ViewModel
                 OnPropertyChanged();
             }
         }
-        public string ErrorMessage
+        public bool RememberLogin
         {
-            get { return _errorMessage; }
+            get { return _rememberLogin; }
             set
             {
-                if (value == _errorMessage) return;
-                _errorMessage = value;
+                if (value == _rememberLogin) return;
+                _rememberLogin = value;
                 OnPropertyChanged();
             }
         }
@@ -61,29 +61,47 @@ namespace HolidayCalendar.ViewModel
             }
         }
 
-        public LoginViewModel()
-        :this(new ActiveDirectoryAuthenticator(), new EmployeeRepository()) 
-        { }
-
-        public LoginViewModel(IEmployeeRepository repository)
-        :this(new ActiveDirectoryAuthenticator(), repository) { }
-
-        public LoginViewModel(IDirectoryAuthenticator authenticator, IEmployeeRepository employeeRepository)
+        public LoginViewModel(MainViewModel mainViewModel)
+        :this(new DirectoryAuthenticatorDummy(), new EmployeeRepository(SettingsHelper.GetConnectionString()), mainViewModel)
         {
-            _directoryAuthenticator = authenticator;
-            _employeeRepository = employeeRepository;
         }
 
+        public LoginViewModel(IEmployeeRepository repository, MainViewModel mainViewModel)
+        :this(new ActiveDirectoryAuthenticator(), repository, mainViewModel)
+        {
+        }
+
+        public LoginViewModel(IDirectoryAuthenticator authenticator, IEmployeeRepository employeeRepository, MainViewModel mainViewModel) 
+        : base(mainViewModel)
+        {
+            Title = "Login";
+            _directoryAuthenticator = authenticator;
+            _employeeRepository = employeeRepository;
+            LoadSettings();
+        }
+
+        private void LoadSettings()
+        {
+            var settings = SettingsHelper.LoadSettings();
+
+            if (settings != null)
+            {
+                Domain = (string)settings["Domain"];
+                UserName = (string)settings["UserName"];
+                RememberLogin = (bool) settings["RememberLogin"];
+            }
+        }
 
         //TODO: there might be need for remember me option, pass too?
         private void LoginExecute(object commandParameter)
         {
             var passwordbox = commandParameter as PasswordBox;
-            var password = passwordbox.Password;
-            if (string.IsNullOrWhiteSpace(password))
+            if (passwordbox == null)
             {
-                throw new ArgumentNullException(nameof(password), "Login cannot be executed without password");
-             }
+                throw new ArgumentNullException("Login command requires passwordbox as parameter.");
+            }
+
+            var password = passwordbox.Password;
         
             if (ValidateCredentials(password))
             {
@@ -91,7 +109,8 @@ namespace HolidayCalendar.ViewModel
                 _directoryAuthenticator.UserName = UserName;
 
                 if (_directoryAuthenticator.Authenticate(password))
-                {
+                {   
+                    SettingsHelper.SaveUserSettings(_rememberLogin, _domain, _userName);
                     GetEmployeeAndLoadNextView();
                 }
                 else
@@ -108,11 +127,12 @@ namespace HolidayCalendar.ViewModel
             if (employee == null)
             {   var hasher = new Sha256StringHasher();
                 var employeeForNewUser = new Employee {Login = hasher.Hash(UserName)};
-                NavigateTo(new CreateEmployeeViewModel(employeeForNewUser, _employeeRepository));
+                ChangeUtility(new CreateEmployeeViewModel(employeeForNewUser, _employeeRepository, MainViewModel));
             }
             else
             {
-                NavigateTo(new HolidayCalendarViewModel(employee, _employeeRepository));
+                LoadViewModel(new HolidayCalendarViewModel(employee, _employeeRepository));
+                Close();
             }
         }
 
@@ -130,18 +150,21 @@ namespace HolidayCalendar.ViewModel
 
             if (string.IsNullOrEmpty(Domain))
             {
-                ErrorMessage += "Domain must not be empty \n";
+                AppendErrorMessage("Domain");
             }
             if (string.IsNullOrEmpty(UserName))
             {
-                ErrorMessage += "User name must not be empty \n";
+                AppendErrorMessage("User name");
             }
             if (password.Length == 0)
             {
-                ErrorMessage += "Password must not be empty";
+                AppendErrorMessage("Password");
             }
+
+            AppendErrorMessageEnd();
 
             return string.IsNullOrEmpty(ErrorMessage);
         }
+
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 using DataLib.Model;
 using DataLib.Repositories;
@@ -11,13 +12,14 @@ namespace HolidayCalendar.ViewModel
     /// Generates EmployeeCalendars for displaying rows in Calendar
     /// Provides summary view model for each day calculation
     /// </summary>
-    public class HolidayCalendarViewModel : ChildViewModel
+    public class HolidayCalendarViewModel : ChildViewModel, IDisposable
     {
         private ObservableCollection<EmployeeCalendarViewModel> _employeeCalendars;
         private IEmployeeRepository _employeeRepository;
+        private Employee _authorizedEmployee;
         
         public Calendar Calendar { get; }
-        public DailySummaryViewModel DailySummary { get; }
+        public DailySummaryViewModel DailySummary { get; private set; }
         public ObservableCollection<EmployeeCalendarViewModel> EmployeeCalendars
         {
             get { return _employeeCalendars; }
@@ -33,7 +35,7 @@ namespace HolidayCalendar.ViewModel
         private ICommand _previousMonthCommand;
         private ICommand _nextYearCommand;
         private ICommand _previousYearCommand;
-
+   
         public ICommand NextMonthCommand
         {
             get
@@ -84,30 +86,24 @@ namespace HolidayCalendar.ViewModel
         :this(employee, new EmployeeRepository())
         {
         }
+
         public HolidayCalendarViewModel(Employee employee, IEmployeeRepository repository)
         {
+            _employeeRepository = repository;
+            _authorizedEmployee = employee;
             Calendar = new Calendar();
-            SetupEmployees(employee, repository);
+        }
+
+        public void FillWithEmployeeData()
+        {
+            SetupEmployees();
             DailySummary = new DailySummaryViewModel(Calendar, EmployeeCalendars);
         }
 
-        private void SetupEmployees(Employee employee, IEmployeeRepository repository)
+        private void SetupEmployees()
         {
-            _employeeRepository = repository;   
-            EmployeeCalendars = new ObservableCollection<EmployeeCalendarViewModel>();
-            CreateEmployeeCalendars(employee);
-        }
-        
-        private void CreateEmployeeCalendars(Employee loggedEmployee)
-        {
-            var employees = _employeeRepository.GetAll();
-            foreach (var employee in employees)
-            {
-                var isAuthorized = employee.FamilyName.Equals(loggedEmployee.FamilyName);
-                var employeeCalendar = new EmployeeCalendarViewModel(employee, Calendar, isAuthorized);
-                EmployeeCalendars.Add(employeeCalendar);
-            }
-
+            var calendarGenerator = new EmployeeCalendarGenerator(_employeeRepository, Calendar, MainViewModel);
+            EmployeeCalendars = new ObservableCollection<EmployeeCalendarViewModel>(calendarGenerator.GetCalendars(_authorizedEmployee));
             MarkRowsAsDistinct();
         }
         
@@ -117,6 +113,24 @@ namespace HolidayCalendar.ViewModel
             {
                 _employeeCalendars[i].IsDistinct = i % 2 != 0;
             }
+        }
+
+        public override void OnLoaded()
+        {
+            base.OnLoaded();
+            FillWithEmployeeData();
+        }
+
+        public override void OnUnloaded()
+        {
+            base.OnUnloaded();
+            _employeeRepository.Save();
+           Dispose();
+        }
+
+        public void Dispose()
+        {
+            _employeeRepository.Dispose();
         }
     }
 }

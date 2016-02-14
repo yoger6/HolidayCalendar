@@ -11,6 +11,7 @@
         <Setter Property="Width" Value="{StaticResource ShortFrameWidth}"/>
         <Setter Property="Height" Value="{StaticResource RowHeight}"/>
         <Setter Property="Margin" Value="1,0,0,0"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
     </Style>
     
     <Style x:Key="CalendarShortFrameWithReason" TargetType="Border" BasedOn="{StaticResource CalendarShortFrame}" >

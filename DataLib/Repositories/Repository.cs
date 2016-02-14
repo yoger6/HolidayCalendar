@@ -8,7 +8,7 @@ namespace DataLib.Repositories
 {
     public abstract class Repository<T> : IRepository<T> where T : class 
     {
-        private readonly HolidyCalendarContext _context;
+        protected readonly HolidayCalendarContext Context;
         protected DbSet<T> DbSet { get; set; }
 
         protected Repository()
@@ -17,8 +17,8 @@ namespace DataLib.Repositories
 
         protected Repository(string connectionString)
         {
-            _context = new HolidyCalendarContext(connectionString);
-            DbSet = _context.Set<T>();
+            Context = new HolidayCalendarContext(connectionString);
+            DbSet = Context.Set<T>();
         }
 
         public virtual List<T> GetAll()
@@ -28,12 +28,13 @@ namespace DataLib.Repositories
 
         public virtual void Add(T entity)
         {
+
             DbSet.Add(entity);
         }
 
         public virtual void Update(T entity)
         {
-            _context.Entry<T>(entity).State = EntityState.Modified;
+            Context.Entry<T>(entity).State = EntityState.Modified;
         }
 
         public virtual void Delete(T entity)
@@ -43,7 +44,7 @@ namespace DataLib.Repositories
 
         public virtual void Save()
         {
-            _context.SaveChanges();
+            Context.SaveChanges();
         }
 
         public void Dispose()
@@ -56,7 +57,7 @@ namespace DataLib.Repositories
         {
             if (disposing)
             {
-               _context.Dispose();
+               Context.Dispose();
             }
         }
     }

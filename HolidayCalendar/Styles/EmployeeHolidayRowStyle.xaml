@@ -10,6 +10,19 @@
     <SolidColorBrush x:Key="DefaultRowBrush" Color="Linen"/>
     <Color x:Key="DistinctRowColor">#DDDDDD</Color>
     <converters:BoolToBrushConverter x:Key="BoolToColorConverter"/>
+    <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    <Image x:Key="Gear" Source="../Img/gear.png"></Image>
+
+    <Style x:Key="EditButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="VerticalAlignment" Value="Stretch"/>
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Command" Value="{Binding EditEmployeeCommand}"/>
+        <Setter Property="Visibility" Value="{Binding IsAuthorized, Converter={StaticResource BoolToVisibilityConverter}}"/>
+        <Setter Property="Content" Value="{StaticResource Gear}"/>
+    </Style>
     
     <Style x:Key="EmployeeRow" TargetType="Grid">
         <Setter Property="HorizontalAlignment" Value="Stretch"/>

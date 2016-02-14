@@ -17,5 +17,10 @@ namespace HolidayCalendarTests.Stubs
         {
             return Items.FirstOrDefault(x => x.Login == login);
         }
+
+        public void AttachHolidays(IEnumerable<HolidayReason> reasons)
+        {
+            
+        }
     }
 }

@@ -21,3 +21,12 @@ HolidayCalendar/obj/Debug/View/CalendarOverview.g.i.cs
 HolidayCalendarTests/obj/Debug/TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs
 *.ps1
 *.nupkg
+*.transform
+packages/EntityFramework.6.1.3/lib/net40/EntityFramework.SqlServer.xml
+*.xml
+*.psm1
+packages/Microsoft.SqlServer.Compact.4.0.8876.1/tools/VS.psd1
+*.manifest
+packages/EntityFramework.6.1.3/tools/migrate.exe
+*.psd1
+packages/Microsoft.SqlServer.Compact.4.0.8876.1/SQLCE_EULA_ENU.rtf

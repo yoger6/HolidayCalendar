@@ -3,7 +3,7 @@
                     xmlns:view="clr-namespace:HolidayCalendar.View"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib"
                     xmlns:converters1="clr-namespace:HolidayCalendar.Tools.Converters">
-    
+
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="ShortFrameStyle.xaml"/>
     </ResourceDictionary.MergedDictionaries>
@@ -17,10 +17,20 @@
 
     <SolidColorBrush x:Key="DayOfWeekBackgroundBrush" Color="LightBlue"/>
     <SolidColorBrush x:Key="DayOfMonthBackgroundBrush" Color="#780000"/>
+    
+    
+    <Style x:Key="CalendarWrapper" TargetType="FrameworkElement">
+        <Setter Property="Margin" Value="5"/>
+    </Style>
 
     <Style x:Key="HeaderFrame" TargetType="Border">
         <Setter Property="MinWidth" Value="100"/>
         <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="Background" Value="{StaticResource ContrastBackgroundBrush}"/>
+    </Style>
+    
+    <Style x:Key="DateLarge" TargetType="TextBlock" BasedOn="{StaticResource HeaderLarge}">
+        <Setter Property="Foreground" Value="{StaticResource ContrastForegroundBrush}"/>
     </Style>
     
     <DataTemplate x:Key="EmployeeRowTemplate">
@@ -35,9 +45,7 @@
         <StackPanel>
             <Border Style="{StaticResource CalendarShortFrame}" 
                     Background="{StaticResource DayOfWeekBackgroundBrush}">
-                <TextBlock Style="{StaticResource DefaultText}"
-                           HorizontalAlignment="Center"
-                           Width="{StaticResource ShortFrameWidth}"
+                <TextBlock Style="{StaticResource CenteredText}"
                            Text="{Binding Path=Value,
                                           Converter={StaticResource StringLengthConverter},
                                           ConverterParameter={StaticResource WeekDayCharsToDisplay}}"/>
@@ -55,11 +63,11 @@
     <Style x:Key="DailySummaryTitleStyle" TargetType="TextBlock" BasedOn="{StaticResource HeaderSmall}">
         <Setter Property="Width" Value="{StaticResource FirstColumnMaxWidth}"/>
     </Style>
+    
     <ItemsPanelTemplate x:Key="DailySummaryItemsPanelTemplate">
         <StackPanel Orientation="Horizontal"/>
     </ItemsPanelTemplate>
     
-
     <DataTemplate x:Key="DailySummaryItemTemplate">
         <StackPanel Orientation="Horizontal">
             <Border Style="{StaticResource CalendarShortFrame}"
@@ -85,5 +93,17 @@
             </Setter.Value>
         </Setter>
     </Style>
+    
+    <Style x:Key="DateChangeButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="VerticalAlignment" Value="Stretch"/>
+        <Setter Property="Width" Value="{StaticResource RowHeight}"/>
+        <Setter Property="Height" Value="{StaticResource RowHeight}"/>
+    </Style>
 
+    <Style TargetType="ScrollViewer">
+        <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="HorizontalScrollBarVisibility" Value="Auto"/>
+    </Style>
 </ResourceDictionary>

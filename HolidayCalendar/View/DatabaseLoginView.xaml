@@ -1,0 +1,51 @@
+﻿<UserControl x:Class="HolidayCalendar.View.DatabaseLoginView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:HolidayCalendar.View"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <ResourceDictionary Source="../Styles/SupportViewModelStyle.xaml" />
+    </UserControl.Resources>
+    <Grid Style="{StaticResource UtilityViewModelWrapper}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Border Grid.Row="0"
+                Style="{StaticResource TitleBorder}">
+            <TextBlock Style="{StaticResource TitleText}"
+                       Text="{Binding Title}" />
+        </Border>
+        <StackPanel Grid.Row="1" Style="{StaticResource FormPanel}">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Style="{StaticResource FieldNameText}"
+                           Text="Source:" />
+                <TextBox Text="{Binding Source, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Style="{StaticResource FieldNameText}"
+                           Text="Catalog:" />
+                <TextBox Text="{Binding Catalog, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Style="{StaticResource FieldNameText}"
+                           Text="User:" />
+                <TextBox Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Style="{StaticResource FieldNameText}"
+                           Text="Password:" />
+                <PasswordBox Name="PasswordBox" />
+            </StackPanel>
+            <Button Command="{Binding LoginToDatabaseCommand}"
+                    CommandParameter="{Binding ElementName=PasswordBox}"
+                    Content="Login" />
+            <Label Style="{StaticResource ErrorText}"
+                   Content="{Binding ErrorMessage}" />
+        </StackPanel>
+    </Grid>
+</UserControl>

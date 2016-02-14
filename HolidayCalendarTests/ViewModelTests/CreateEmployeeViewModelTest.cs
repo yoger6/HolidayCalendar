@@ -16,21 +16,22 @@ namespace HolidayCalendarTests.ViewModelTests
         private EmployeeRepositoryStub _repository;
         private List<Employee> _employees;
         private Employee _employee;
-
-        //TODO: test validation
+        
         [TestInitialize]
         public void Initialize()
         {
+            _mainViewModel = new MainViewModel();
             _employee = new Employee {Login = "ExistingEmployeesLogin"};
             _employees = new List<Employee> {_employee};
             _repository = new EmployeeRepositoryStub(_employees);
+            SettingsHelper.SaveConnectionString("Data Source=YOGER-SUPERMAN\\SQLEXPRESS;Initial Catalog=HolidayCalendar;Integrated Security=True;Connect Timeout=5");
         }
 
         [TestMethod]
         public void SavingNewEmployeeIsPersistedInRepository()
         {
             var employeeToSave = new Employee {FamilyName = "Smith", FirstName = "John"};
-            _viewModel = new CreateEmployeeViewModel(employeeToSave, _repository);
+            _viewModel = new CreateEmployeeViewModel(employeeToSave, _repository, _mainViewModel);
             _viewModel.SaveEmployeeCommand.Execute(null);
 
             CollectionAssert.Contains(_employees, employeeToSave);
@@ -41,7 +42,7 @@ namespace HolidayCalendarTests.ViewModelTests
         {
             _employees.Clear();
             var employeeToSave = new Employee ();
-            _viewModel = new CreateEmployeeViewModel(employeeToSave, _repository)
+            _viewModel = new CreateEmployeeViewModel(employeeToSave, _repository, _mainViewModel)
             {
                 FirstName = "John",
                 FamilyName = "Smith"
@@ -56,7 +57,7 @@ namespace HolidayCalendarTests.ViewModelTests
         public void SaveCannotBeExecutedIfAnyNameInViewModelIsNullOrEmpty()
         {
             var employeeToSave = new Employee();
-            _viewModel = new CreateEmployeeViewModel(employeeToSave, _repository)
+            _viewModel = new CreateEmployeeViewModel(employeeToSave, _repository, _mainViewModel)
             {
                 FirstName = null,
                 FamilyName = "Smith"
@@ -69,27 +70,25 @@ namespace HolidayCalendarTests.ViewModelTests
         [TestMethod]
         public void CancelCommandNavigatesToLoginScreen()
         {
-            _viewModel = new CreateEmployeeViewModel(new Employee(), _repository);
-            _mainViewModel = new MainViewModel();
-            _mainViewModel.LoadModel(_viewModel);
+            _viewModel = new CreateEmployeeViewModel(new Employee(), _repository, _mainViewModel);
+            _mainViewModel.LoadUtilityViewModel(_viewModel);
 
             _viewModel.CancelCommand.Execute(null);
 
-            Assert.IsInstanceOfType(_mainViewModel.CurrentViewModel, typeof(LoginViewModel));
+            Assert.IsInstanceOfType(_mainViewModel.CurrentUtilityViewModel, typeof(LoginViewModel));
         }
 
         [TestMethod]
         public void SaveCommandNavigatesToCalendarIfSuccessfullySaved()
         {
             _employees.Clear();
-            _viewModel = new CreateEmployeeViewModel(new Employee (), _repository)
+            _viewModel = new CreateEmployeeViewModel(new Employee (), _repository, _mainViewModel)
             {
                 FirstName = "Adam", 
                 FamilyName = "West" 
             
             };
-            _mainViewModel = new MainViewModel();
-            _mainViewModel.LoadModel(_viewModel);
+            _mainViewModel.LoadUtilityViewModel(_viewModel);
 
             _viewModel.SaveEmployeeCommand.Execute(null);
 

@@ -23,18 +23,21 @@ namespace HolidayCalendarTests.ViewModelTests
                 new Employee {FirstName = "Zardoz", FamilyName = "Ohm"}
             };
 
+            SettingsHelper.SaveConnectionString("Data Source=YOGER-SUPERMAN\\SQLEXPRESS;Initial Catalog=HolidayCalendar;Integrated Security=True;Connect Timeout=5");
             _holidayCalendar = new HolidayCalendarViewModel(_employees.First(), new EmployeeRepositoryStub(_employees));
          }
 
         [TestMethod]
         public void EmployeeCalendarsAreBeingGeneratedFromEmployeeRepository()
         {
+            _holidayCalendar.FillWithEmployeeData();
             Assert.AreEqual(_employees.Count, _holidayCalendar.EmployeeCalendars.Count);
         }
 
         [TestMethod]
         public void OddEmployeeCalndarIsMarkedAsDistinct()
         {
+            _holidayCalendar.FillWithEmployeeData();
             var shouldntBeDistinct = _holidayCalendar.EmployeeCalendars[0].IsDistinct;
             var shouldBeDistinct = _holidayCalendar.EmployeeCalendars[1].IsDistinct;
         

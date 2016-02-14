@@ -38,6 +38,9 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Xaml" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <Choose>
@@ -54,13 +57,17 @@
   </Choose>
   <ItemGroup>
     <Compile Include="BoolToBrushConverterTest.cs" />
+    <Compile Include="BoolToVisibilityConverterTest.cs" />
     <Compile Include="CalendarTest.cs" />
+    <Compile Include="EmployeeCalendarGeneratorTest.cs" />
     <Compile Include="HolidayColorToBrushConverterTest.cs" />
+    <Compile Include="SettingsHelperTest.cs" />
     <Compile Include="Stubs\ChildViewModelStub.cs" />
+    <Compile Include="Stubs\UtilityViewModelStub.cs" />
     <Compile Include="ViewModelTests\ChildViewModelTest.cs" />
+    <Compile Include="ViewModelTests\DbLoginViewModelTest.cs" />
     <Compile Include="ViewModelTests\EmployeeCalendarViewModelTest.cs" />
     <Compile Include="ViewModelTests\EmployeeDaysViewModelTests.cs" />
-    <Compile Include="HolidayApplierTest.cs" />
     <Compile Include="ViewModelTests\CreateEmployeeViewModelTest.cs" />
     <Compile Include="ViewModelTests\LegendViewModelTest.cs" />
     <Compile Include="DoubleToMarginValueTest.cs" />
@@ -75,6 +82,7 @@
     <Compile Include="Stubs\EmployeeRepositoryStub.cs" />
     <Compile Include="ViewModelTests\CalendarViewModelTest.cs" />
     <Compile Include="ViewModelTests\MainViewModelTest.cs" />
+    <Compile Include="ViewModelTests\UtilityViewModelTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DataLib\DataLib.csproj">
@@ -85,6 +93,10 @@
       <Project>{7a8bae5f-6897-4047-a4c6-b42fbfd365ac}</Project>
       <Name>HolidayCalendar</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

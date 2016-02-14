@@ -6,7 +6,8 @@ namespace HolidayCalendar.ViewModel
     public class MainViewModel : ViewModel
     {
         private ChildViewModel _currentViewModel;
-        
+        private UtilityViewModel _currentUtilityViewModel;
+
         public ChildViewModel CurrentViewModel
         {
             get { return _currentViewModel; }
@@ -17,8 +18,20 @@ namespace HolidayCalendar.ViewModel
                 OnPropertyChanged();
             }
         }
+        public UtilityViewModel CurrentUtilityViewModel
+        {
+            get { return _currentUtilityViewModel; }
+            set
+            {
+                if (Equals(value, _currentUtilityViewModel)) return;
+                _currentUtilityViewModel = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(IsUtilityPresent));
+            }
+        }
         public string Title => "Holiday Calendar";
-
+        public bool IsUtilityPresent => _currentUtilityViewModel != null;
+        
 
         public MainViewModel()
         {
@@ -28,9 +41,16 @@ namespace HolidayCalendar.ViewModel
 
         private void LoadInitialViewModel()
         {
-            var loginViewModel = new LoginViewModel(new DirectoryAuthenticatorDummy(), new EmployeeRepository());
-            loginViewModel.MainViewModel = this;
-            CurrentViewModel = loginViewModel;
+            var connectionString = SettingsHelper.GetConnectionString();
+
+            if (ConnectionVerifier.IsConnectionValid(connectionString))
+            {
+                LoadUtilityViewModel(new LoginViewModel(this));
+            }
+            else
+            {
+                CurrentUtilityViewModel = new DatabaseLoginViewModel(this);
+            }
         }
 
         public void LoadModel(ChildViewModel viewModel)
@@ -53,6 +73,16 @@ namespace HolidayCalendar.ViewModel
         public void Close()
         {
             UnloadCurrentViewModel();
+        }
+
+        public void UnloadUtilityViewModel()
+        {
+            CurrentUtilityViewModel = null;
+        }
+
+        public void LoadUtilityViewModel(UtilityViewModel viewModel)
+        {
+            CurrentUtilityViewModel = viewModel;
         }
     }
 }

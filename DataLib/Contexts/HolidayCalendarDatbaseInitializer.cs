@@ -5,9 +5,9 @@ using DataLib.Model;
 
 namespace DataLib.Contexts
 {
-    public class HolidayCalendarDatbaseInitializer : DropCreateDatabaseIfModelChanges<HolidyCalendarContext>
+    public class HolidayCalendarDatbaseInitializer : DropCreateDatabaseIfModelChanges<HolidayCalendarContext>
     {
-        protected override void Seed(HolidyCalendarContext context)
+        protected override void Seed(HolidayCalendarContext context)
         {
             
             var defaultHolidayReasons = new [] 
@@ -25,12 +25,7 @@ namespace DataLib.Contexts
                 new HolidayReason { ShortName = "POC", FullName = "Peak On Call", Color = new HolidayColor(57,72,111)},
                 new HolidayReason { ShortName = "HOC", FullName = "Day On Call", Color = new HolidayColor(126,126,126)}
             };
-
-            var defaultEmployees = new[]
-            {
-                new Employee {FirstName = "Kajetan", FamilyName = "Chmiliński", Login = "fca85a2171d6dc56b9f56a736bafdae1b41f4c8dda3bf516c7fb1883f105042", Holidays = new [] {new Day {Date = new DateTime(2015,9,15), HolidayReason = defaultHolidayReasons.First()} } }
-            };
-            context.Employees.AddRange(defaultEmployees);
+            
             context.HolidayReasons.AddRange(defaultHolidayReasons);
             context.SaveChanges();
         }

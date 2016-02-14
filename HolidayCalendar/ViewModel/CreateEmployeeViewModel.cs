@@ -1,18 +1,20 @@
-﻿using System.Windows.Input;
+﻿using System;
+using System.Windows.Input;
 using DataLib.Model;
 using DataLib.Repositories;
 using HolidayCalendar.Misc;
 
 namespace HolidayCalendar.ViewModel
 {
-    public class CreateEmployeeViewModel : ChildViewModel
+    public class CreateEmployeeViewModel : UtilityViewModel
     {
-        private readonly Employee _employee;
-        private readonly IEmployeeRepository _repository;
         private ICommand _saveEmployeeCommand;
         private ICommand _cancelCommand;
         private string _firstName;
         private string _familyName;
+
+        protected readonly Employee Employee;
+        protected readonly IEmployeeRepository Repository;
 
         public ICommand SaveEmployeeCommand
         {
@@ -20,7 +22,7 @@ namespace HolidayCalendar.ViewModel
             {
                 if (_saveEmployeeCommand == null)
                 {
-                    _saveEmployeeCommand = new RelayCommand(SaveEmployee, CanSaveEmployee);
+                    _saveEmployeeCommand = new RelayCommand(SaveEmployeeExecute, SaveEmployeeCanExecute);
                 }
                 return _saveEmployeeCommand;
             }
@@ -31,7 +33,7 @@ namespace HolidayCalendar.ViewModel
             {
                 if (_cancelCommand == null)
                 {
-                    _cancelCommand = new RelayCommand(GoToLoginView);
+                    _cancelCommand = new RelayCommand(CancelExecute);
                 }
                 return _cancelCommand;
             }
@@ -58,44 +60,53 @@ namespace HolidayCalendar.ViewModel
         }
 
 
-        public CreateEmployeeViewModel(Employee employee)
-        :this(employee, new EmployeeRepository()) { }
 
-        public CreateEmployeeViewModel(Employee employee, IEmployeeRepository repository)
+        public CreateEmployeeViewModel(Employee employee, MainViewModel mainViewModel)
+        :this(employee, new EmployeeRepository(), mainViewModel) { }
+
+        public CreateEmployeeViewModel(Employee employee, IEmployeeRepository repository, MainViewModel mainViewModel)
+        :base(mainViewModel)
         {
-            _employee = employee;
-            _repository = repository;
+            Employee = employee;
+            Repository = repository;
+            Title = "Create Employee";
         }
         
 
-        private bool CanSaveEmployee(object obj)
+        private bool SaveEmployeeCanExecute(object obj)
         {
             return !(string.IsNullOrWhiteSpace(_firstName) ||
                      string.IsNullOrWhiteSpace(_familyName));
         }
 
-        private void SaveEmployee(object obj)
+        private void SaveEmployeeExecute(object obj)
         {
             AssignPropertiesToModel();
-            _repository.Add(_employee);
-            _repository.Save();
+            Save();
+        }
+
+        protected virtual void Save()
+        {
+            Repository.Add(Employee);
+            Repository.Save();
             GoToCalendar();
         }
 
         private void AssignPropertiesToModel()
         {
-            _employee.FirstName = _firstName;
-            _employee.FamilyName = _familyName;
+            Employee.FirstName = _firstName;
+            Employee.FamilyName = _familyName;
         }
 
         private void GoToCalendar()
         {
-            NavigateTo(new HolidayCalendarViewModel(_employee, _repository));
+            LoadViewModel(new HolidayCalendarViewModel(Employee, Repository));
+            Close();
         }
 
-        private void GoToLoginView(object obj)
+        private void CancelExecute(object obj)
         {
-            NavigateTo(new LoginViewModel(_repository));
+            ChangeUtility(new LoginViewModel(Repository, MainViewModel));
         }
     }
 }

@@ -4,7 +4,6 @@ namespace HolidayCalendar.ViewModel
 {
     public abstract class ChildViewModel : ViewModel
     {
-
         public MainViewModel MainViewModel;
         
         public void NavigateTo(ChildViewModel viewModel)
@@ -15,6 +14,7 @@ namespace HolidayCalendar.ViewModel
                                                  "it's done by default when using MainViewModel to load it. " +
                                                  "Consider doing this or assign MainViewModel manually.");
             }
+            viewModel.MainViewModel = MainViewModel;
             MainViewModel.LoadModel(viewModel);
         }
 

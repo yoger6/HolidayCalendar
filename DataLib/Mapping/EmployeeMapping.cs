@@ -17,7 +17,9 @@ namespace DataLib.Mapping
             Property(x => x.Login)
                 .IsRequired()
                 .HasMaxLength(64);
-            HasMany(x => x.Holidays);
+            HasMany(x => x.Holidays).WithRequired()
+                                    .HasForeignKey(x=>x.EmployeeId)
+                                    .WillCascadeOnDelete();
             ToTable("Employees");
         }
     }

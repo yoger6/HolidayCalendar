@@ -8,6 +8,6 @@ namespace DataLib.Model
         public string FirstName { get; set; }
         public string FamilyName { get; set; }
         public string Login { get; set; }
-        public ICollection<Day> Holidays { get; set; } = new List<Day>();
+        public virtual ICollection<Day> Holidays { get; set; } = new List<Day>();
     }
 }

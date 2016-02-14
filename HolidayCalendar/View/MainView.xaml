@@ -3,13 +3,15 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:viewModels="clr-namespace:HolidayCalendar.ViewModel"
         xmlns:views="clr-namespace:HolidayCalendar.View"
-        Title="{Binding Title}"
-        SizeToContent="WidthAndHeight">
+        Style="{StaticResource ApplicationWindow}"
+        Title="{Binding Title}">
     <Window.DataContext>
         <viewModels:MainViewModel/>
     </Window.DataContext>
-
     <Window.Resources>
+        <DataTemplate DataType="{x:Type viewModels:DatabaseLoginViewModel}">
+            <views:DatabaseLoginView/>
+        </DataTemplate>
         <DataTemplate DataType="{x:Type viewModels:LoginViewModel}">
             <views:LoginView/>
         </DataTemplate>
@@ -19,7 +21,13 @@
         <DataTemplate DataType="{x:Type viewModels:CreateEmployeeViewModel}">
             <views:CreateEmployeeView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModels:EditEmployeeViewModel}">
+            <views:CreateEmployeeView/>
+        </DataTemplate>
     </Window.Resources>
-    
-    <ContentControl Content="{Binding CurrentViewModel}"/>
+    <Grid>
+        <ContentControl Content="{Binding CurrentViewModel}"/>
+        <Border Style="{StaticResource UtilityBorder}"/>
+        <ContentControl Style="{StaticResource UtilityWrapper}" Content="{Binding CurrentUtilityViewModel}"/>
+    </Grid>
 </Window>

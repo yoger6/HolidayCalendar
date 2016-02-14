@@ -6,7 +6,7 @@
         <ResourceDictionary Source="../Styles/CalendarStyle.xaml"/>
      </UserControl.Resources>
     
-    <Grid>
+    <Grid Style="{StaticResource CalendarWrapper}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -22,38 +22,44 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Button Grid.Column="0" 
+                    Style="{StaticResource DateChangeButton}"
                     Command="{Binding PreviousMonthCommand}"
                     Content="&lt;"/>
             <Button Grid.Column="2" 
+                    Style="{StaticResource DateChangeButton}"
                     Command="{Binding NextMonthCommand}"
                     Content="&gt;"/>
             <Border Grid.Column="1" Style="{StaticResource HeaderFrame}">
-                <TextBlock Style="{StaticResource HeaderLarge}" 
+                <TextBlock Style="{StaticResource DateLarge}" 
                            Text="{Binding Calendar.MonthName}"/>
             </Border>
 
             <Button Grid.Column="4" 
+                    Style="{StaticResource DateChangeButton}"
                     Command="{Binding PreviousYearCommand}"
                     Content="&lt;"/>
             <Button Grid.Column="6" 
+                    Style="{StaticResource DateChangeButton}"
                     Command="{Binding NextYearCommand}"
                     Content="&gt;"/>
             <Border Grid.Column="5" Style="{StaticResource HeaderFrame}">
-                <TextBlock Style="{StaticResource HeaderLarge}" 
+                <TextBlock Style="{StaticResource DateLarge}" 
                            Text="{Binding Calendar.Year}"/>
             </Border>
         </Grid>
-        <StackPanel Grid.Row="1">
-            <!--Table headers-->
-            <ItemsControl ItemsSource="{Binding Calendar.Days}" 
+        <ScrollViewer Grid.Row="1">
+            <StackPanel>
+                <!--Table headers-->
+                <ItemsControl ItemsSource="{Binding Calendar.Days}" 
                           ItemsPanel="{StaticResource DaysOfWeekPanelTemplate}" 
                           ItemTemplate="{StaticResource DayOfWeekTemplate}"/>
-            <!--User names, holidays & user summary-->
-            <ItemsControl ItemsSource="{Binding EmployeeCalendars}" 
+                <!--User names, holidays & user summary-->
+                <ItemsControl ItemsSource="{Binding EmployeeCalendars}" 
                           ItemTemplate="{StaticResource EmployeeRowTemplate}"/>
-            <!--Daily summary-->
-            <ItemsControl ItemsSource="{Binding DailySummary.Summaries}"
+                <!--Daily summary-->
+                <ItemsControl ItemsSource="{Binding DailySummary.Summaries}"
                           Style="{StaticResource DailySummaryStyle}"/>
-        </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </UserControl>

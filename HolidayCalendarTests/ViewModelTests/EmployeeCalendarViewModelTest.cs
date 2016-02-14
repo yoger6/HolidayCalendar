@@ -4,6 +4,7 @@ using System.Linq;
 using DataLib.Model;
 using HolidayCalendar.Tools;
 using HolidayCalendar.ViewModel;
+using HolidayCalendarTests.Stubs;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HolidayCalendarTests.ViewModelTests
@@ -23,7 +24,7 @@ namespace HolidayCalendarTests.ViewModelTests
             _calendar.SetDate(2015, 7);
             _holidays = new List<Day>();
             _employee = new Employee {Holidays = _holidays};
-            _employeeCalendar = new EmployeeCalendarViewModel(_employee, _calendar, true);
+            _employeeCalendar = new EmployeeCalendarViewModel(_employee, _calendar, true, new EmployeeRepositoryStub());
         }
         
 
@@ -68,7 +69,7 @@ namespace HolidayCalendarTests.ViewModelTests
         {
             _calendar.SetDate(2015,8);
             _employeeCalendar.SelectionChangedCommand.Execute(new List<DayViewModel> { _employeeCalendar.EmployeeDays.First() });
-            _employeeCalendar.MarkDayCommand.Execute(new HolidayReason());
+            _employeeCalendar.MarkDayCommand.Execute(new HolidayReason {Id = 1});
 
             Assert.AreEqual(1, _holidays.Count);
         }
@@ -76,7 +77,7 @@ namespace HolidayCalendarTests.ViewModelTests
         [TestMethod]
         public void UnauthorizedEmployeeCannotPerformChanges()
         {
-            _employeeCalendar = new EmployeeCalendarViewModel(_employee, _calendar, false);
+            _employeeCalendar = new EmployeeCalendarViewModel(_employee, _calendar, false, new EmployeeRepositoryStub());
 
             Assert.IsFalse(_employeeCalendar.SelectionChangedCommand.CanExecute(null));
             Assert.IsFalse(_employeeCalendar.MarkDayCommand.CanExecute(null));

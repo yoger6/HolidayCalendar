@@ -12,7 +12,7 @@ namespace HolidayCalendar.ViewModel
         public IList<HolidayReason> Reasons { get; private set; }
 
         public LegendViewModel() 
-        : this(new HolidayReasonRepository())
+        : this(new HolidayReasonRepository(SettingsHelper.GetConnectionString()))
         {
         }
 

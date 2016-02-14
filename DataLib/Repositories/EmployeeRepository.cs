@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using DataLib.Model;
 
@@ -16,10 +17,19 @@ namespace DataLib.Repositories
         {
             return DbSet.Include("Holidays").ToList();
         }
-
+        
+        
         public Employee Find(string login)
         {
             return DbSet.FirstOrDefault(x=>x.Login == login);
+        }
+
+        public void AttachHolidays(IEnumerable<HolidayReason> reasons)
+        {
+            foreach (var holidayReason in reasons)
+            {
+                Context.HolidayReasons.Attach(holidayReason);
+            }
         }
     }
 }

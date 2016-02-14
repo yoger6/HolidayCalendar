@@ -53,8 +53,8 @@ namespace HolidayCalendar.ViewModel
                     _employee.Holidays.Add(new Day
                     {
                         Date = changedDayViewModel.Date,
-                        HolidayReason=changedDayViewModel.HolidayReason
-                    });
+                        HolidayReason=changedDayViewModel.HolidayReason,
+                });
                 }
             }
         }

@@ -40,8 +40,11 @@ namespace HolidayCalendarTests.Stubs
             var listItem = Items.FirstOrDefault(x => x.Equals(entity));
             var itemsIndex = Items.IndexOf(listItem);
 
-            Items[itemsIndex] = entity;
-            OnUpdateCalled();
+            if(itemsIndex >= 0)
+            {
+                Items[itemsIndex] = entity;
+                OnUpdateCalled();
+            }
         }
 
         public override void Save()

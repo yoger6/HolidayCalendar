@@ -1,4 +1,5 @@
-﻿using System.Data.Entity.ModelConfiguration;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity.ModelConfiguration;
 using DataLib.Model;
 
 namespace DataLib.Mapping
@@ -7,7 +8,8 @@ namespace DataLib.Mapping
     {
         public DayMapping()
         {
-            HasKey(x => x.Id);
+            HasKey(x => new {x.Id, x.EmployeeId});
+            Property(x => x.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             HasRequired(x => x.HolidayReason);
         }
     }

@@ -4,18 +4,18 @@ using DataLib.Model;
 
 namespace DataLib.Contexts
 {
-    public class HolidyCalendarContext : DbContext
+    public class HolidayCalendarContext : DbContext
     {
-        public DbSet<Employee> Employees { get; set; } 
+        public DbSet<Employee> Employees { get; set; }
         public DbSet<HolidayReason> HolidayReasons { get; set; }
+        public DbSet<Day> Days { get; set; }
 
 
-        public HolidyCalendarContext(string conntectionString)
-            : base(conntectionString)
+        public HolidayCalendarContext(string connectionString)
+            : base(connectionString)
         {
             Database.SetInitializer(new HolidayCalendarDatbaseInitializer());
         }
-
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
